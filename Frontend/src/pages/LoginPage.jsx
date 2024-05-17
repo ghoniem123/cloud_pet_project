@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import InfoHover from '../components/InfoHover';
+import InfoHover from '../components/infoHover';
 
 export default function LoginPage() {
     const [username, setUsername] = useState('');
