@@ -1,7 +1,10 @@
+/* eslint-disable no-unused-vars */
 import {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import React,{useContext} from 'react';
 import InfoHover from '../components/infoHover';
+import { UserContext } from '../App';
 
 export default function RegisterPage() {
     const [username, setUsername] = useState('');
@@ -11,6 +14,8 @@ export default function RegisterPage() {
     const [isVisible, setVisible] = useState(false);
     const [error, setError] = useState(false);
     const [preview, setPreview] = useState(null);
+    const { user, setUser } = useContext(UserContext);
+
     const navigate = useNavigate();
 
     const register = async (e) => {
@@ -33,8 +38,9 @@ export default function RegisterPage() {
                     'Content-Type': 'multipart/form-data', //to let the server know that the data is in form of file
                   },
             });
+            setUser(data);
             sessionStorage.setItem('user', JSON.stringify(data));
-            console.log(JSON.parse(sessionStorage.getItem('user')).data.age);
+
             navigate('/profile');
         } catch (error) {
             setError(true);

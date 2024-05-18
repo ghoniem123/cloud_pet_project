@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import ReactDOM from 'react-dom';
+import React from 'react';
 import "../styles/success.css";
 import close from "../assets/close.png";
 import warn from "../assets/warn.png";

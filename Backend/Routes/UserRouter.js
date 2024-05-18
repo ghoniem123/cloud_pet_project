@@ -4,13 +4,15 @@ const userController = require('../Controller/userController');
 
 router
 .route('/')
-.get(userController.Login)
 .post(userController.Register)
+
+router
+.route('/login')
+.post(userController.Login)
 
 
 router
 .route('/:username')
-.get(userController.Login)
 .delete(userController.deleteUser)
 
 
@@ -27,8 +29,8 @@ router
 .put(userController.updatePhoto)
 
 router
-.route('/user/:imageKey')
-.get(userController.displayImage)
+.route('/user/image')
+.post(userController.displayImage)
 
 
 module.exports = router;

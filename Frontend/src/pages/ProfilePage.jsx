@@ -1,17 +1,19 @@
+/* eslint-disable no-unused-vars */
 import {useState, useEffect} from 'react';
 import axios from 'axios';
+import React, {useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import InfoHover from '../components/infoHover';
-
+import { UserContext } from '../App';
 
 
 export default function ProfilePage() {
-    const user = JSON.parse(sessionStorage.getItem('user')).data;
-    console.log(user);
-    const username = user.username;
+    const { user, setUser } = useContext(UserContext); 
+    console.log("---------->",user);
+    const username = user.data.username;
     const [isVisible, setVisible] = useState(false);
-    const [name, setName] = useState(user.name);
-    const [age, setAge] = useState(user.age);
+    const [name, setName] = useState(user.data.name);
+    const [age, setAge] = useState(user.data.age);
     const [photoUrl, setPhotoUrl] = useState('');
     const [isNameReadoOnly, setIsNameReadOnly ] = useState(true);
     const [isAgeReadoOnly, setIsAgeReadOnly ] = useState(true);
@@ -28,7 +30,8 @@ export default function ProfilePage() {
         try{
             await axios.delete(`http://localhost:4000/${username}`);
             setIsDeleted(true);
-            sessionStorage.clear();
+            // sessionStorage.clear();
+            setUser(null);
             navigate('/login');
         }catch(err){
             console.log(err);
@@ -45,7 +48,10 @@ export default function ProfilePage() {
         const {data}= await axios.put('http://localhost:4000/user/name', {username, name});
         console.log(data)
         sessionStorage.clear();
-        sessionStorage.setItem('user',  JSON.stringify(data));
+        // sessionStorage.setItem('user',  );
+        setUser(data)
+        sessionStorage.setItem('user', JSON.stringify(data));
+
         setIsNameUpdated(true);
         setIsNameReadOnly(true);
             
@@ -63,7 +69,10 @@ export default function ProfilePage() {
             }
         const {data} = await axios.put('http://localhost:4000/user/age', {username, age});
         sessionStorage.clear();
-        sessionStorage.setItem('user',  JSON.stringify(data));
+        // sessionStorage.setItem('user',  JSON.stringify(data));
+        setUser(data)
+        sessionStorage.setItem('user', JSON.stringify(data));
+
         setIsAgeUpdated(true);
         setIsAgeReadOnly(true);
             
@@ -120,10 +129,11 @@ export default function ProfilePage() {
     }
 
     async function getImage(){
+        console.log("imageeeeeeeeeeeeeeeeeeeeeeeeeee")
         try{
             console.log(username);
-          const { data } = await axios.get(`http://localhost:4000/user/${username}-photo`);
-
+          const { data } = await axios.post(`http://localhost:4000/user/image` ,  {imageKey:`${username}-photo` });
+           console.log(data.url);
           setPhotoUrl(data.url);  
 
         }catch(err){
@@ -142,7 +152,6 @@ export default function ProfilePage() {
 
 
     useEffect( ()=>{
-
     getImage();
     })
 

@@ -8,10 +8,10 @@ const upload = multer();
 
 
 const DbClient = new DynamoDBClient({
-  region : process.env.REGION,
+  region : 'eu-north-1',
   credentials: {
-    accessKeyId: process.env.ACCESS_KEY_ID,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY,
+    accessKeyId: "AKIAYS2NUJTLBBT6RNYA",
+    secretAccessKey: "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" ,
   },  
 
 })
@@ -19,10 +19,10 @@ const DbClient = new DynamoDBClient({
 const userTable = "Users";
 
 const s3Client = new S3Client({
-  region : process.env.REGION,
+  region : 'eu-north-1',
   credentials: {
-    accessKeyId: process.env.ACCESS_KEY_ID,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY,
+    accessKeyId: "AKIAYS2NUJTLBBT6RNYA",
+    secretAccessKey: "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" ,
   },  
 })
 
@@ -52,7 +52,7 @@ const userController = {
 
   Login: async (req, res) => {
     console.log(req.params)
-    const {username} = req.params;
+    const {username} = req.body;
 
     console.log(username)
 
@@ -282,7 +282,7 @@ const userController = {
 
   displayImage: async (req, res) =>{
 
-    const {imageKey} = req.params;
+    const {imageKey} = req.body;
 
     console.log(imageKey);
     const params = {

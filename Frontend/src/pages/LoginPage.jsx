@@ -1,13 +1,17 @@
-import {useState} from 'react';
+/* eslint-disable no-unused-vars */
+import {useState,useEffect} from 'react';
+import React, {useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import InfoHover from '../components/infoHover';
+import { UserContext } from '../App';
 
 export default function LoginPage() {
     const [username, setUsername] = useState('');
     const [isVisible, setVisible] = useState(false);
     const [error, setError] = useState(false);
     const navigate = useNavigate();
+    const {user, setUser} = useContext(UserContext);
 
     const login = async (e) => {
         e.preventDefault();
@@ -23,10 +27,15 @@ export default function LoginPage() {
             formData.append('username', username);
 
 
-            const { data } = await axios.get(`http://localhost:4000/${username}`);
+            const  {data}  = await axios.post(`http://localhost:4000/login`,{username:username});
 
+            console.log("dataaaaaaaa  ", data);
+
+            setUser(data);
             sessionStorage.setItem('user', JSON.stringify(data));
-            console.log(JSON.parse(sessionStorage.getItem('user')).data);
+
+            console.log("LLLLLLLLLLLLLLLLLLLLL   ",user)
+
             navigate('/profile');
         } catch (error) {
             setError(true);
